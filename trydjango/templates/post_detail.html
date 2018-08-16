@@ -1,0 +1,41 @@
+{% extends "base.html" %} 
+ 
+{% load urlify %}
+
+{% block head_title %}{{block.super}} | {{instance.title}} {% endblock %}
+
+{% block content %}
+<div class="col-md-6 offset-md-3">
+	{% if instance.image %}
+	<img src="{{instance.image.url}}" class="img img-responsive" width="490px" height="490px">
+	{% endif %}
+	<h1>{{ title }} <small>{% if instance.draft %}<span style="color:red;">Draft</span>{% endif %} {{instance.publish }}</small> </h1>
+	{% if instance.user.get_full_name %}
+	<p>Author: {{ instance.user.get_full_name }}</p>
+	{% endif %}
+
+	<p>
+		<div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-size="large" data-show-faces="true" data-share="true"></div>
+	</p><hr>
+
+	<!--<a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri}}">Facebook</a>
+
+	<a href="https://twitter.com/home?status={{ instance.content|truncatechars:200 }}%20{{ request.build_absolute_uri}}">Twitter</a>
+
+	<a href="https://plus.google.com/sharer/sharer.php?u={{ request.build_absolute_uri}}">Google</a>
+
+	<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri}}$title={{ instance.title}}&summary={{ share_string }}&source={{ request.build_absolute_uri }}">Linkedin</a>
+
+	<a href="https://www.reddit.com/submit?url={{ request.build_absolute_uri}}&title={{ share_string }}">Linkedin</a> -->
+	{{instance.content|linebreaks}}<br><hr>
+
+<div class="row">
+	<div class="col-sm-11 offset-md-1">
+		<div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5"></div>
+	</div>
+</div>
+
+{% endblock content %}
+</div><!-- end of the div col-md-6 offset-md-3-->
+</body>
+</html>

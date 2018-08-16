@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+	
+<div class="col-md-6 offset-md-3">
+	<h1>{{ title }}</h1>
+
+<form method="GET" action="" class="form-inline">
+	<div class="form-group offset-sm-2">
+		<input class="form-control" type="text" name="q" placeholder="Search post..." value="{{ request.GET.q }}">
+	</div>
+	<div class="form-group">
+		<input type="submit" value="Search" class="btn btn-primary offset-sm-2">
+	</div>
+</form><br>
+
+	{% for obj in object_list  %}
+<div class="row">
+<div class="col-md-12">
+<div class="card">
+	<div class="card-body">
+		{% if obj.image %}
+			<img src="{{obj.image.url}}" class="img img-responsive" width="490px">
+		{% endif %}
+
+		{% if obj.draft %}<h3>Staff only: Draft{% endif %}</h3> <h3>{% if obj.publish > today %}Staff only: Future Post </h3> {% endif %} 
+
+		<h3><a href="{{ obj.get_absolute_url }}">{{obj.title}}</a>  <small>{{ obj.publish }}</small></h3>
+
+	{% if obj.user.get_full_name %}<p>Author: {{ obj.user.get_full_name }}</p>{% endif %}
+
+		<p>
+			{{ obj.content|linebreaks|truncatechars:120 }}<!-- This make the post content to show 120 character of the post-->
+		</p>
+		<p>
+			<a href="{{ obj.get_absolute_url }}" class="btn btn-primary">View</a>
+		</p>
+	</div>
+</div>
+</div>
+</div><hr>
+	{% endfor %}
+<div class="pagination">
+	<span class="step-links">
+		{% if object_list.has_previous %}
+		<a href="?{{page_request_var}}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+		{% endif %}
+	<span class="current">
+		Page {{object_list.number}} | {{object_list.paginator.num_pages}}
+	</span>
+ {% if object_list.has_next %}
+ <a href="?{{page_request_var}}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
+ {% endif %}
+</span>	 
+</div><!--End of the pagination div -->
+
+</div><!--End of the Row -->
+{% endblock content %}
